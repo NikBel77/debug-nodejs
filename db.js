@@ -1,7 +1,8 @@
 const Sequelize = require('sequelize');
+require('dotenv').config();
                                 //database username   password
-const sequelize = new Sequelize('gamedb', 'postgres', 'ghastb0i', {
-    host: 'localhost',
+const sequelize = new Sequelize(process.env.pgname, process.env.pgusername, process.env.pgpsw, {
+    host: process.env.pghost,
     dialect: 'postgres'
 })
 
@@ -14,3 +15,5 @@ sequelize.authenticate().then(
         console.log(`Error: ${err}`);
     }
 )
+
+module.exports = sequelize
