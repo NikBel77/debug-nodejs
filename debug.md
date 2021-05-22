@@ -10,16 +10,6 @@ file - controllers/usercontroller.js line 2
 problem - var bcrypt = require('bcrypt');
 fix - var bcrypt = require('bcryptjs');
 
-3. require(...).import is not a function
-file controllers/usercontroller.js line 5
-problem - var User = require('../db').import('../models/user');
-fix var User = require('../models/user');
-
-4. require(...).import is not a function
-file controllers/gamecontroller.js line 2
-problem - var Game = require('../db').import('../models/game');
-fix - var Game = require('../models/game');
-
 5. SyntaxError: Function statements require a function name
 file models/game.js line 1
 problem function(sequelize, DataTypes) not exported
@@ -32,18 +22,13 @@ fix module.exports = router;
 
 7. TypeError: db.sync is not a function 
 file app.js line 8
-problem db is not imported from db.js file
+problem db is not exported from db.js
 fix db.js: module.exports = sequelize
 
-8. TypeError: require(...).import is not a function
-file validate-session.js line 2
-problem - var User = require('sequelize').import('../models/user');
-fix var User = require('../models/user');
-
-9. bodyParser: usage incorrect
-file app.js line 9
-problem - app.use(require('body-parser'));
-fix - app.use(require('body-parser').json());
+9. create User bcrypt hashSync function name
+file usercontroller.js line 13
+problem - password _ h _ ash: bcrypt.hashSync(req.body.user.password, 10),
+fix - passwordHash: bcrypt.hashSync(req.body.user.password, 10),
 
 logic errors:
 
@@ -58,12 +43,28 @@ app.listen(PORT, function() {
     console.log(`App is started on localhost:${PORT}`);
 })
 
-2. create User bcrypt hashSync function name
-file usercontroller.js line 13
-problem - password _ h _ ash: bcrypt.hashSync(req.body.user.password, 10),
-fix - passwordHash: bcrypt.hashSync(req.body.user.password, 10),
+2. bodyParser: usage incorrect
+file app.js line 9
+problem - app.use(require('body-parser'));
+fix - app.use(require('body-parser').json());
 
-3. rejection ReferenceError: games is not defined
+3. require(...).import is not a function
+file controllers/usercontroller.js line 5
+problem - var User = require('../db').import('../models/user');
+db is not exported in file /db.js
+
+4. require(...).import is not a function
+file controllers/gamecontroller.js line 2
+problem - var Game = require('../db').import('../models/game');
+db is not exported in file /db.js
+
+5. TypeError: require(...).import
+file validate-session.js line 2
+problem - must provide db instance
+var User = require('sequelize').import('../models/user');
+fix var User = require(../db).import('../models/user');
+
+6. rejection ReferenceError: games is not defined
 file gamecontroller.js line 11
 problem - 
     function findSuccess(data) {
@@ -80,7 +81,7 @@ fix -
         })
     },
 
-4. router usercontroller update user
+7. router usercontroller update user
 file gamecontroller.js line 75 
 problem -
     where: {
