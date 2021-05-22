@@ -40,6 +40,11 @@ file validate-session.js line 2
 problem - var User = require('sequelize').import('../models/user');
 fix var User = require('../models/user');
 
+9. bodyParser: usage incorrect
+file app.js line 9
+problem - app.use(require('body-parser'));
+fix - app.use(require('body-parser').json());
+
 logic errors:
 
 1. app not listen any port
@@ -52,3 +57,38 @@ fix - difine PORT variable
 app.listen(PORT, function() {
     console.log(`App is started on localhost:${PORT}`);
 })
+
+2. create User bcrypt hashSync function name
+file usercontroller.js line 13
+problem - password _ h _ ash: bcrypt.hashSync(req.body.user.password, 10),
+fix - passwordHash: bcrypt.hashSync(req.body.user.password, 10),
+
+3. rejection ReferenceError: games is not defined
+file gamecontroller.js line 11
+problem - 
+    function findSuccess(data) {
+        res.status(200).json({
+            games: games,
+            message: "Data fetched."
+        })
+    },
+fix -
+    function findSuccess(data) {
+        res.status(200).json({
+            games: data,
+            message: "Data fetched."
+        })
+    },
+
+4. router usercontroller update user
+file gamecontroller.js line 75 
+problem -
+    where: {
+        id: req.params.id,
+        owner_id: req.user
+    }
+fix -
+    where: {
+        id: req.params.id,
+        owner_id: req.user.id
+    }
