@@ -93,3 +93,10 @@ fix -
         id: req.params.id,
         owner_id: req.user.id
     }
+
+refactoring: 
+1. all variable declaration to const
+2. all callback f-ns to arrow functions
+3. add catch block to Promises
+4. use async f-ns in routers, remove then/catch blocks
+5. use destructurization in routers

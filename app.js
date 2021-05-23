@@ -16,6 +16,6 @@ app.use('/api/auth', user);
 app.use(validate);
 app.use('/api/game', game);
 
-app.listen(PORT, function() {
+app.listen(PORT, () => {
     console.log(`App is started on http://localhost:${PORT}`);
 })
